@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DOG WALKING SERVICE</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <style>
+    body {
+      background: linear-gradient(45deg, red, yellow, green, cyan, blue, magenta);
+      color: lime;
+      font-family: 'Comic Sans MS', cursive;
+      animation: blink 0.3s infinite;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    button {
+      width: 500px;
+      height: 200px;
+      font-size: 50px;
+    }
+
+    .hidden-focus:focus {
+      outline: none;
+    }
+
+    .long-form {
+      margin-top: 40px;
+    }
+
+    .long-form input {
+      display: block;
+      margin: 30px 0;
+      width: 1000px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>DOG OF THE DAY 🐶</h1>
+
+    <div>
+      <img :src="dogImage" alt="">
+    </div>
+
+    <div class="long-form">
+      <label>Enter your name:</label>
+      <input type="text" placeholder="Enter full legal name with prefix, suffix, and middle name here">
+
+      <label>Email:</label>
+      <input type="text" placeholder="Email address used for dog walking contracts and future marketing">
+
+      <button class="hidden-focus" @click="fetchDog">GET ANOTHER DOG</button>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          dogImage: ''
+        }
+      },
+      mounted() {
+        this.fetchDog();
+      },
+      methods: {
+        fetchDog() {
+          fetch("https://dog.ceo/api/breeds/image/random")
+            .then(res => res.json())
+            .then(data => {
+              this.dogImage = data.message;
+            });
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
