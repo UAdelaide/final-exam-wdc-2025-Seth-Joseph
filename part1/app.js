@@ -24,8 +24,8 @@ async function initDatabase() {
         ('alice123', 'alice@example.com', 'hashed123', 'owner'),
         ('bobwalker', 'bob@example.com', 'hashed456', 'walker'),
         ('carol123', 'carol@example.com', 'hashed789', 'owner'),
-        ('soobth', 'david@example.com', 'hashed000', 'walker'),
-        ('sroob', 'eve@example.com', 'hashed111', 'owner');
+        ('soobth', 'soobth@example.com', 'hashed000', 'walker'),
+        ('sroob', 'sroob@example.com', 'hashed111', 'owner');
     `);
 
     // Seed dogs
