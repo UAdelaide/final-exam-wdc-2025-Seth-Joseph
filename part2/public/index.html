@@ -13,8 +13,22 @@
     <h1 class="mb-4 text-primary">{{ message }}</h1>
     <p class="lead">Connect with trusted walkers for your beloved dog!</p>
 
-    <a href="owner-dashboard.html" class="btn btn-outline-primary me-2">Owner Dashboard</a>
-    <a href="walker-dashboard.html" class="btn btn-outline-success">Walker Dashboard</a>
+    <form v-if="!loggedIn" @submit.prevent="login" class="mb-3" style="max-width:400px">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input v-model="email" type="email" class="form-control" id="email" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input v-model="password" type="password" class="form-control" id="password" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+      <div v-if="error" class="alert alert-danger mt-2">{{ error }}</div>
+    </form>
+
+    <div v-if="loggedIn">
+      <div class="alert alert-success">Login successful! Redirecting...</div>
+    </div>
   </div>
 
   <script>
@@ -22,8 +36,42 @@
     createApp({
       data() {
         return {
-          message: 'Welcome to the Dog Walking Service!'
+          message: 'Welcome to the Dog Walking Service!',
+          email: '',
+          password: '',
+          error: '',
+          loggedIn: false
         };
+      },
+      methods: {
+        async login() {
+          this.error = '';
+          try {
+            const res = await fetch('/api/users/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email: this.email, password: this.password })
+            });
+            const data = await res.json();
+            if (!res.ok) {
+              this.error = data.error || 'Login failed';
+              return;
+            }
+            this.loggedIn = true;
+            setTimeout(() => {
+              if (data.role === 'owner') {
+                window.location.href = 'owner-dashboard.html';
+              } else if (data.role === 'walker') {
+                window.location.href = 'walker-dashboard.html';
+              } else {
+                this.error = 'Unknown role';
+                this.loggedIn = false;
+              }
+            }, 1000);
+          } catch (e) {
+            this.error = 'Network error';
+          }
+        }
       }
     }).mount('#app');
   </script>
