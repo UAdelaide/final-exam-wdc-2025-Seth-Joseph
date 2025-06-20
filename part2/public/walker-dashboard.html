@@ -44,7 +44,6 @@
         const walks = ref([]);
         const message = ref('');
         const error = ref('');
-        const user = 3;
 
         async function loadWalkRequests() {
           try {
@@ -56,12 +55,25 @@
           }
         }
 
+        async function getCurrentUser() {
+          try {
+            const res = await fetch('/api/users/me');
+            if (!res.ok) throw new Error('Not logged in');
+            return await res.json();
+          } catch (err) {
+            error.value = err.message;
+            return null;
+          }
+        }
+
         async function applyToWalk(requestId) {
           try {
+            const user = await getCurrentUser();
+            if (!user) throw new Error('Not logged in');
             const res = await fetch(`/api/walks/${requestId}/apply`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ walker_id: user })
+              body: JSON.stringify({ walker_id: user.user_id })
             });
             const result = await res.json();
 
