@@ -41,15 +41,20 @@ async function initDatabase() {
     // Seed walk requests
     await db.query(`
       INSERT IGNORE INTO WalkRequests (dog_id, requested_time, duration_minutes, location, status)
-      SELECT dog_id, '2025-06-10 08:00:00', 30, 'Parklands', 'open' FROM Dogs WHERE name = 'Max'
-      UNION
-      SELECT dog_id, '2025-06-10 09:30:00', 45, 'Beachside Ave', 'accepted' FROM Dogs WHERE name = 'Bella'
-      UNION
-      SELECT dog_id, '2025-06-11 10:00:00', 60, 'City Square', 'open' FROM Dogs WHERE name = 'Rocky'
-      UNION
-      SELECT dog_id, '2025-06-12 14:00:00', 30, 'Riverside Park', 'open' FROM Dogs WHERE name = 'Luna'
-      UNION
-      SELECT dog_id, '2025-06-13 16:00:00', 20, 'Hillside Trail', 'cancelled' FROM Dogs WHERE name = 'Coco';
+       ((SELECT dog_id FROM Dogs WHERE name = 'Max' AND owner_id = (SELECT user_id FROM Users WHERE username = 'alice123')),
+       '2025-06-10 08:00:00', 30, 'Parklands', 'open'),
+
+  ((SELECT dog_id FROM Dogs WHERE name = 'Bella' AND owner_id = (SELECT user_id FROM Users WHERE username = 'carol123')), 
+   '2025-06-10 09:30:00', 45, 'Beachside Ave', 'accepted'),
+
+  ((SELECT dog_id FROM Dogs WHERE name = 'Sagar' AND owner_id = (SELECT user_id FROM Users WHERE username = 'alice123')), 
+   '2025-06-11 10:00:00', 60, 'City Square', 'open'),
+
+  ((SELECT dog_id FROM Dogs WHERE name = 'Ishu' AND owner_id = (SELECT user_id FROM Users WHERE username = 'sroob')), 
+   '2025-06-12 14:00:00', 30, 'Kollaithazham', 'open'),
+
+  ((SELECT dog_id FROM Dogs WHERE name = 'Pathram' AND owner_id = (SELECT user_id FROM Users WHERE username = 'sroob')), 
+   '2025-06-13 16:00:00', 20, 'Mundupalam', 'cancelled');
     `);
 
     console.log("Database seeded successfully.");
