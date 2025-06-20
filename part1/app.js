@@ -10,9 +10,9 @@ let db;
 async function initDatabase() {
   try {
     db = await mysql.createConnection({
-      host: process.env.DB_HOST || 'localhost',
-      user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASS || '',
+      host: 'localhost',
+      user: 'root',
+      password: '',
       database: 'DogWalkService',
       multipleStatements: true
     });
