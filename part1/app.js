@@ -29,14 +29,19 @@ async function initDatabase() {
     `);
 
     // Seed dogs
-    await db.query(`
-      INSERT IGNORE INTO Dogs (owner_id, name, size)
-        ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Max', 'medium'),
-        ((SELECT user_id FROM Users WHERE username = 'carol123'), 'Bella', 'small'),
-        ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Sagar', 'large'),
-        ((SELECT user_id FROM Users WHERE username = 'sroob'), 'Ishu', 'medium'),
-        ((SELECT user_id FROM Users WHERE username = 'sroob'), 'Pathram', 'small');
-    `);
+await db.query(`
+  INSERT IGNORE INTO Dogs (owner_id, name, size)
+  SELECT user_id, 'Max', 'medium' FROM Users WHERE username = 'alice123'
+  UNION
+  SELECT user_id, 'Bella', 'small' FROM Users WHERE username = 'carol123'
+  UNION
+  SELECT user_id, 'Sagar', 'large' FROM Users WHERE username = 'alice123'
+  UNION
+  SELECT user_id, 'Ishu', 'medium' FROM Users WHERE username = 'sroob'
+  UNION
+  SELECT user_id, 'Pathram', 'small' FROM Users WHERE username = 'sroob';
+`);
+
 
     // Seed walk requests
     await db.query(`
