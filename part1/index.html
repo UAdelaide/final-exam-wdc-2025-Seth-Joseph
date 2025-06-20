@@ -6,36 +6,40 @@
   <title>Dog of the Day</title>
   <style>
     body {
-      background-color: #ff00ff;
-      font-family: 'Comic Sans MS', cursive;
-      color: #00ff00;
+      background-color: #ff00ff; /* Bright, clashing magenta background */
+      font-family: 'Comic Sans MS', cursive; /* Hard-to-read font */
+      color: #00ff00; /* Neon green text, low contrast with background */
       text-align: center;
+      position: relative; /* Ensure body is a positioning context */
+      min-height: 100vh; /* Ensure body takes full viewport height */
+      margin: 0;
     }
     h1 {
-      font-size: 12px;
-      animation: blink 0.5s infinite;
+      font-size: 12px; /* Tiny, hard-to-read heading */
+      animation: blink 0.5s infinite; /* Rapidly blinking text */
     }
     .dog-container {
       margin-top: 50px;
     }
     .dog-image {
-      width: 100px;
-      border: 5px solid yellow;
+      width: 100px; /* Small image size */
+      border: 5px solid yellow; /* Clashing color border */
     }
     .dog-info {
-      font-size: 10px;
-      line-height: 1;
+      font-size: 10px; /* Tiny text */
+      line-height: 1; /* Cramped line spacing */
     }
     .hover-button {
       position: absolute;
-      top: 10px;
-      left: 10px;
       background-color: red;
       color: white;
       border: none;
       padding: 2px;
-      font-size: 8px;
+      font-size: 8px; /* Tiny button text */
       cursor: pointer;
+    }
+    .hover-button:hover {
+      transform: translate(500px, 300px); /* Button moves far away on hover */
     }
     @keyframes blink {
       50% { opacity: 0; }
@@ -52,7 +56,7 @@
         <p>Breed: Mystery Mutt</p>
         <p>Today's Special Dog!</p>
       </div>
-      <button class="hover-button" @click="fetchDogImage">Get New Dog</button>
+      <button class="hover-button" :style="buttonStyle" @click="fetchDogImage">Get New Dog</button>
     </div>
   </div>
 
@@ -63,7 +67,11 @@
     createApp({
       data() {
         return {
-          dogImage: ''
+          dogImage: '',
+          buttonStyle: {
+            top: '10px',
+            left: '10px'
+          }
         };
       },
       methods: {
@@ -72,9 +80,22 @@
             const response = await fetch('https://dog.ceo/api/breeds/image/random');
             const data = await response.json();
             this.dogImage = data.message;
+            // Move button to random position
+            this.moveButton();
           } catch (error) {
             console.error('Error fetching dog image:', error);
           }
+        },
+        moveButton() {
+          // Get viewport dimensions
+          const maxX = window.innerWidth - 100; // Adjust for button width
+          const maxY = window.innerHeight - 50; // Adjust for button height
+          const randomX = Math.floor(Math.random() * maxX);
+          const randomY = Math.floor(Math.random() * maxY);
+          this.buttonStyle = {
+            top: `${randomY}px`,
+            left: `${randomX}px`
+          };
         }
       },
       mounted() {
