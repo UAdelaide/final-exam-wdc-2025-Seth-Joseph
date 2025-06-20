@@ -19,13 +19,13 @@ async function initDatabase() {
 
     // Seed users
     await db.query(`
-      INSERT IGNORE INTO Users (username, email, password_hash, role)
-      VALUES
-        ('alice123', 'alice@example.com', 'hashed123', 'owner'),
-        ('bobwalker', 'bob@example.com', 'hashed456', 'walker'),
-        ('carol123', 'carol@example.com', 'hashed789', 'owner'),
-        ('davidwalker', 'david@example.com', 'hashed000', 'walker'),
-        ('eveowner', 'eve@example.com', 'hashed111', 'owner');
+      INSERT INTO Users (username, email, password_hash, role)
+VALUES 
+  ('alice123', 'alice@example.com', 'hashed123', 'owner'),
+  ('bobwalker', 'bob@example.com', 'hashed456', 'walker'),
+  ('carol123', 'carol@example.com', 'hashed789', 'owner'),
+  ('soobth', 'soobth@example.com', 'hashed321', 'walker'),
+  ('sroob', 'sroob@example.com', 'hashed654', 'owner');
     `);
 
     // Seed dogs
