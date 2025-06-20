@@ -4,21 +4,15 @@ const mysql = require('mysql2/promise');
 const app = express();
 const PORT = 3000;
 
-let db;
-
-// Connect and seed database
-async function initDatabase() {
-  try {
-    db = await mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: '',
-      database: 'DogWalkService',
-      multipleStatements: true
-    });
-
-
-}
+const pool = mysql.createPool({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'DogWalkService',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
 
 // GET /api/dogs
 app.get('/api/dogs', async (req, res) => {
