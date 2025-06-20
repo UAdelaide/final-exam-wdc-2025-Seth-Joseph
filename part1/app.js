@@ -65,9 +65,4 @@ app.get('/api/walkers/summary', async (req, res) => {
   }
 });
 
-// Start server
-initDatabase().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
-});
+module.exports = app;
