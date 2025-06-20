@@ -29,6 +29,27 @@
     <div v-if="loggedIn">
       <div class="alert alert-success">Login successful! Redirecting...</div>
     </div>
+
+    <h2 class="mt-5 mb-3">All Dogs in the Database</h2>
+    <table v-if="dogs.length" class="table table-bordered align-middle bg-white">
+      <thead class="table-light">
+        <tr>
+          <th>Photo</th>
+          <th>Name</th>
+          <th>Size</th>
+          <th>Owner</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="dog in dogs" :key="dog.dog_name + dog.owner_username">
+          <td><img :src="dog.photo" alt="dog photo" style="width:80px; height:80px; object-fit:cover; border-radius:8px;"></td>
+          <td>{{ dog.dog_name }}</td>
+          <td>{{ dog.size }}</td>
+          <td>{{ dog.owner_username }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div v-else class="text-muted">No dogs found.</div>
   </div>
 
   <script>
@@ -40,7 +61,8 @@
           username: '',
           password: '',
           error: '',
-          loggedIn: false
+          loggedIn: false,
+          dogs: []
         };
       },
       methods: {
@@ -71,7 +93,29 @@
           } catch (e) {
             this.error = 'Network error';
           }
+        },
+        async loadDogs() {
+          try {
+            const res = await fetch('/api/dogs');
+            const dogs = await res.json();
+            // Fetch a random photo for each dog
+            const dogsWithPhotos = await Promise.all(dogs.map(async dog => {
+              try {
+                const photoRes = await fetch('https://dog.ceo/api/breeds/image/random');
+                const photoData = await photoRes.json();
+                return { ...dog, photo: photoData.message };
+              } catch {
+                return { ...dog, photo: '' };
+              }
+            }));
+            this.dogs = dogsWithPhotos;
+          } catch (e) {
+            this.dogs = [];
+          }
         }
+      },
+      mounted() {
+        this.loadDogs();
       }
     }).mount('#app');
   </script>
