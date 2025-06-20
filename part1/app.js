@@ -45,9 +45,8 @@ async function initDatabase() {
         '2025-06-10 08:00:00', 30, 'Parklands', 'open'),
         ((SELECT dog_id FROM Dogs WHERE name = 'Bella' AND owner_id = (SELECT user_id FROM Users WHERE username = 'carol123')),
         '2025-06-10 09:30:00', 45, 'Beachside Ave', 'accepted'),
-
-  ((SELECT dog_id FROM Dogs WHERE name = 'Sagar' AND owner_id = (SELECT user_id FROM Users WHERE username = 'alice123')), 
-   '2025-06-11 10:00:00', 60, 'City Square', 'open'),
+        ((SELECT dog_id FROM Dogs WHERE name = 'Sagar' AND owner_id = (SELECT user_id FROM Users WHERE username = 'alice123')),
+        '2025-06-11 10:00:00', 60, 'City Square', 'open'),
 
   ((SELECT dog_id FROM Dogs WHERE name = 'Ishu' AND owner_id = (SELECT user_id FROM Users WHERE username = 'sroob')), 
    '2025-06-12 14:00:00', 30, 'Kollaithazham', 'open'),
