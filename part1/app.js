@@ -24,7 +24,7 @@ async function initDatabase() {
         ('alice123', 'alice@example.com', 'hashed123', 'owner'),
         ('bobwalker', 'bob@example.com', 'hashed456', 'walker'),
         ('carol123', 'carol@example.com', 'hashed789', 'owner'),
-        ('soobth', 'soobth@example.com', 'hashed321', 'walker'),
+        ('mike123', 'mike123@example.com', 'hashed321', 'walker'),
         ('sroob', 'sroob@example.com', 'hashed654', 'owner');
     `);
 
