@@ -35,7 +35,7 @@
       color: white;
       border: none;
       padding: 2px;
-      font-size: 8px; 
+      font-size: 8px;
       cursor: pointer;
     }
     @keyframes blink {
@@ -77,16 +77,14 @@
             const response = await fetch('https://dog.ceo/api/breeds/image/random');
             const data = await response.json();
             this.dogImage = data.message;
-            // Move button to random position
             this.moveButton();
           } catch (error) {
             console.error('Error fetching dog image:', error);
           }
         },
         moveButton() {
-          // Get viewport dimensions
-          const maxX = window.innerWidth - 100; // Adjust for button width
-          const maxY = window.innerHeight - 50; // Adjust for button height
+          const maxX = window.innerWidth - 100;
+          const maxY = window.innerHeight - 50;
           const randomX = Math.floor(Math.random() * maxX);
           const randomY = Math.floor(Math.random() * maxY);
           this.buttonStyle = {
@@ -96,7 +94,7 @@
         }
       },
       mounted() {
-        this.fetchDogImage(); // Load initial dog image
+        this.fetchDogImage();
       }
     }).mount('#app');
   </script>
