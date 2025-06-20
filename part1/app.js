@@ -31,11 +31,11 @@ async function initDatabase() {
     // Seed dogs
     await db.query(`
       INSERT IGNORE INTO Dogs (owner_id, name, size)
-          ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Max', 'medium'),
-          ((SELECT user_id FROM Users WHERE username = 'carol123'), 'Bella', 'small'),
-          ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Sagar', 'large'),
-          ((SELECT user_id FROM Users WHERE username = 'sroob'), 'Ishu', 'medium'),
-          ((SELECT user_id FROM Users WHERE username = 'sroob'), 'Pathram', 'small');
+        ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Max', 'medium'),
+        ((SELECT user_id FROM Users WHERE username = 'carol123'), 'Bella', 'small'),
+        ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Sagar', 'large'),
+        ((SELECT user_id FROM Users WHERE username = 'sroob'), 'Ishu', 'medium'),
+        ((SELECT user_id FROM Users WHERE username = 'sroob'), 'Pathram', 'small');
     `);
 
     // Seed walk requests
