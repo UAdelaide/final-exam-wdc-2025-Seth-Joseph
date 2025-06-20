@@ -20,8 +20,10 @@
       <div class="card-body">
         <form @submit.prevent="submitWalkRequest">
           <div class="mb-3">
-            <label class="form-label">Dog ID</label>
-            <input v-model="form.dog_id" type="number" class="form-control" required>
+            <label class="form-label">Dog</label>
+            <select v-model="form.dog_id" class="form-select" required>
+              <option v-for="dog in dogs" :value="dog.dog_id" :key="dog.dog_id">{{ dog.dog_name }}</option>
+            </select>
           </div>
           <div class="mb-3">
             <label class="form-label">Requested Date & Time</label>
@@ -78,6 +80,7 @@
         });
 
         const walks = ref([]);
+        const dogs = ref([]);
         const message = ref('');
         const error = ref('');
 
@@ -87,6 +90,19 @@
             walks.value = await res.json();
           } catch (err) {
             error.value = 'Failed to load walk requests';
+          }
+        }
+
+        async function loadDogs() {
+          try {
+            const res = await fetch('/api/users/me');
+            if (!res.ok) throw new Error('Not logged in');
+            const user = await res.json();
+            const dogRes = await fetch(`/api/users/${user.user_id}/dogs`);
+            if (!dogRes.ok) throw new Error('Failed to load dogs');
+            dogs.value = await dogRes.json();
+          } catch (err) {
+            error.value = err.message;
           }
         }
 
@@ -118,11 +134,13 @@
 
         onMounted(() => {
           loadWalks();
+          loadDogs();
         });
 
         return {
           form,
           walks,
+          dogs,
           message,
           error,
           submitWalkRequest,
