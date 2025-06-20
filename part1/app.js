@@ -17,30 +17,6 @@ async function initDatabase() {
       multipleStatements: true
     });
 
-    // Seed users
-    await db.query(`
-      INSERT IGNORE INTO Users (username, email, password_hash, role)
-      VALUES
-        ('alice123', 'alice@example.com', 'hashed123', 'owner'),
-        ('bobwalker', 'bob@example.com', 'hashed456', 'walker'),
-        ('carol123', 'carol@example.com', 'hashed789', 'owner'),
-        ('soobth', 'soobth@example.com', 'hashed321', 'walker'),
-        ('sroob', 'sroob@example.com', 'hashed654', 'owner');
-    `);
-
-    // Seed dogs
-    await db.query(`
-    INSERT IGNORE INTO Dogs (owner_id, name, size)
-        SELECT user_id, 'Max', 'medium' FROM Users WHERE username = 'alice123'
-        UNION
-        SELECT user_id, 'Bella', 'small' FROM Users WHERE username = 'carol123'
-        UNION
-        SELECT user_id, 'Sagar', 'large' FROM Users WHERE username = 'alice123'
-        UNION
-        SELECT user_id, 'Ishu', 'medium' FROM Users WHERE username = 'sroob'
-        UNION
-        SELECT user_id, 'Pathram', 'small' FROM Users WHERE username = 'sroob';
-    `);
 
 
     // Seed walk requests
