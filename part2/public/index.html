@@ -15,8 +15,8 @@
 
     <form id="loginForm" class="mb-3" @submit.prevent="login">
       <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" required>
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" required>
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
@@ -37,7 +37,7 @@
       },
       methods: {
         async login() {
-          const email = document.getElementById('email').value;
+          const username = document.getElementById('username').value;
           const password = document.getElementById('password').value;
           const errorDiv = document.getElementById('loginError');
           errorDiv.textContent = '';
@@ -45,7 +45,7 @@
             const res = await fetch('/api/users/login', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email, password })
+              body: JSON.stringify({ username, password })
             });
             const data = await res.json();
             if (!res.ok) {
