@@ -25,7 +25,7 @@ async function initDatabase() {
         ('bobwalker', 'bob@example.com', 'hashed456', 'walker'),
         ('carol123', 'carol@example.com', 'hashed789', 'owner'),
         ('mike123', 'mike123@example.com', 'hashed321', 'walker'),
-        ('sroob', 'sroob@example.com', 'hashed654', 'owner');
+        ('top123', 'top123@example.com', 'hashed654', 'owner');
     `);
 
     // Seed dogs
@@ -37,9 +37,9 @@ async function initDatabase() {
         UNION
         SELECT user_id, 'Sagar', 'large' FROM Users WHERE username = 'alice123'
         UNION
-        SELECT user_id, 'Ishu', 'medium' FROM Users WHERE username = 'sroob'
+        SELECT user_id, 'Ishu', 'medium' FROM Users WHERE username = 'top123'
         UNION
-        SELECT user_id, 'Pathram', 'small' FROM Users WHERE username = 'sroob';
+        SELECT user_id, 'Pathram', 'small' FROM Users WHERE username = 'top123';
     `);
 
 
@@ -56,10 +56,10 @@ async function initDatabase() {
         FROM Dogs WHERE name = 'Sagar' AND owner_id = (SELECT user_id FROM Users WHERE username = 'alice123')
         UNION
         SELECT dog_id, '2025-06-12 14:00:00', 30, 'Kollaithazham', 'open'
-        FROM Dogs WHERE name = 'Ishu' AND owner_id = (SELECT user_id FROM Users WHERE username = 'sroob')
+        FROM Dogs WHERE name = 'Ishu' AND owner_id = (SELECT user_id FROM Users WHERE username = 'top123')
         UNION
         SELECT dog_id, '2025-06-13 16:00:00', 20, 'Mundupalam', 'cancelled'
-        FROM Dogs WHERE name = 'Pathram' AND owner_id = (SELECT user_id FROM Users WHERE username = 'sroob');
+        FROM Dogs WHERE name = 'Pathram' AND owner_id = (SELECT user_id FROM Users WHERE username = 'top123');
     `);
 
 
