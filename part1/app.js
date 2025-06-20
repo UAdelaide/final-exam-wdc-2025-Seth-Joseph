@@ -17,6 +17,7 @@ async function initDatabase() {
       multipleStatements: true
     });
 
+
 }
 
 // GET /api/dogs
