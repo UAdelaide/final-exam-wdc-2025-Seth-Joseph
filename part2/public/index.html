@@ -98,8 +98,7 @@
         },
         async loadDogs() {
           try {
-            // Use the Part 1 API endpoint for all dogs
-            const res = await fetch('http://localhost:3000/api/dogs');
+            const res = await fetch('/api/dogs');
             const dogs = await res.json();
             if (!Array.isArray(dogs)) {
               this.dogs = [];
