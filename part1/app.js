@@ -6,7 +6,6 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const pool = require('./db');
-const initializeDatabase = require('./initdb');
 
 var app = express();
 
@@ -18,16 +17,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
-// Initialize DB and insert test data on startup
-(async () => {
-  try {
-    await initializeDatabase();
-    console.log('Database initialized with test data.');
-  } catch (err) {
-    console.error('Database initialization failed:', err);
-  }
-})();
 
 // Helper to get a connection
 async function getConnection() {
