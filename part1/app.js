@@ -17,4 +17,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+app.get('/api/dogs', async (req, res) => {
+    try {
+      const conn = await getConnection();
+      const [rows] = await conn.execute(`
+        SELECT d.name AS dog_name, d.size, u.username AS owner_username
+        FROM Dogs d
+        JOIN Users u ON d.owner_id = u.user_id
+      `);
+      res.json(rows);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch dogs', details: error.message });
+    }
+  });
+
 module.exports = app;
