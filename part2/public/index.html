@@ -38,11 +38,11 @@
           <th>Name</th>
           <th>Size</th>
           <th>Owner ID</th>
+          <th>Photo</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="dog in dogs" :key="dog.dog_name + dog.owner_username">
-          <td><img :src="dog.photo" alt="dog photo" style="width:80px; height:80px; object-fit:cover; border-radius:8px;"></td>
           <td>{{ dog.dog_name }}</td>
           <td>{{ dog.size }}</td>
           <td>{{ dog.owner_username }}</td>
