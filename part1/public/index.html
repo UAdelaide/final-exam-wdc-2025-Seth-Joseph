@@ -1,12 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Express</title>
-    <link rel="stylesheet" href="/stylesheets/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dog of the Day</title>
+  <style>
+    body {
+      background-color: #ff00ff;
+      font-family: 'Comic Sans MS', cursive;
+      color: #00ff00;
+      text-align: center;
+      position: relative;
+      min-height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      font-size: 12px;
+      animation: blink 0.5s infinite;
+    }
+    .dog-container {
+      margin-top: 50px;
+    }
+    .dog-image {
+      width: 100px;
+      border: 5px solid yellow;
+    }
+    .dog-info {
+      font-size: 10px;
+      line-height: 1;
+    }
+    .hover-button {
+      position: absolute;
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 2px;
+      font-size: 8px;
+      cursor: pointer;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+  </style>
 </head>
-
 <body>
-    <h1>Express</h1>
-    <p>Welcome to Express</p>
+  <div id="app">
+    <h1>DOG OF THE DAY!!!</h1>
+    <div class="dog-container">
+      <img :src="dogImage" class="dog-image">
+      <div class="dog-info">
+        <p>Name: Jacky</p>
+        <p>Breed: pookie bread</p>
+        <p>Today's Special Dog!</p>
+      </div>
+      <button class="hover-button" :style="buttonStyle" @click="fetchDogImage">Get New Dog</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          dogImage: '',
+          buttonStyle: {
+            top: '10px',
+            left: '10px'
+          }
+        };
+      },
+      methods: {
+        async fetchDogImage() {
+          try {
+            const response = await fetch('https://dog.ceo/api/breeds/image/random');
+            const data = await response.json();
+            this.dogImage = data.message;
+            this.moveButton();
+          } catch (error) {
+            console.error('Error fetching dog image:', error);
+          }
+        },
+        moveButton() {
+          const maxX = window.innerWidth - 100;
+          const maxY = window.innerHeight - 50;
+          const randomX = Math.floor(Math.random() * maxX);
+          const randomY = Math.floor(Math.random() * maxY);
+          this.buttonStyle = {
+            top: `${randomY}px`,
+            left: `${randomX}px`
+          };
+        }
+      },
+      mounted() {
+        this.fetchDogImage();
+      }
+    }).mount('#app');
+  </script>
 </body>
 </html>
