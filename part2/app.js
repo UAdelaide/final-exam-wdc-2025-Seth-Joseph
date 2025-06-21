@@ -22,7 +22,7 @@ const userRoutes = require('./routes/userRoutes');
 app.use('/api/walks', walkRoutes);
 app.use('/api/users', userRoutes);
 
-// GET /api/dogs - List all dogs with their name, size, and owner username
+// GET /api/dogs
 const db = require('./models/db');
 app.get('/api/dogs', async (req, res) => {
   try {
