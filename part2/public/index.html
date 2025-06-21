@@ -98,8 +98,13 @@
         },
         async loadDogs() {
           try {
-            const res = await fetch('/api/dogs');
+            // Use the Part 1 API endpoint for all dogs
+            const res = await fetch('http://localhost:3000/api/dogs');
             const dogs = await res.json();
+            if (!Array.isArray(dogs)) {
+              this.dogs = [];
+              return;
+            }
             // Fetch a random photo for each dog
             const dogsWithPhotos = await Promise.all(dogs.map(async dog => {
               try {
