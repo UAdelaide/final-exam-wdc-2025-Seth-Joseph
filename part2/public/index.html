@@ -28,6 +28,34 @@
 
     <div v-if="loggedIn">
       <div class="alert alert-success">Login successful! Redirecting...</div>
+      <div v-if="dogs.length" class="mt-4">
+        <h2 class="mb-3">All Dogs</h2>
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Dog ID</th>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Owner ID</th>
+                <th>Photo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="dog in dogs" :key="dog.id">
+                <td>{{ dog.id }}</td>
+                <td>{{ dog.name }}</td>
+                <td>{{ dog.size }}</td>
+                <td>{{ dog.owner_id }}</td>
+                <td>
+                  <img v-if="dog.photo" :src="dog.photo" alt="Dog photo" style="max-width:100px;max-height:100px;object-fit:cover;">
+                  <span v-else>Loading...</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     
@@ -61,6 +89,8 @@
               return;
             }
             this.loggedIn = true;
+            // Fetch dogs and their photos after login
+            await this.fetchDogsWithPhotos();
             setTimeout(() => {
               if (data.role === 'owner') {
                 window.location.href = 'owner-dashboard.html';
@@ -75,6 +105,25 @@
             this.error = 'Network error';
           }
         },
+        async fetchDogsWithPhotos() {
+          try {
+            const res = await fetch('/api/dogs');
+            const dogs = await res.json();
+            // For each dog, fetch a random photo from Dog CEO API
+            const dogsWithPhotos = await Promise.all(dogs.map(async (dog) => {
+              try {
+                const photoRes = await fetch('https://dog.ceo/api/breeds/image/random');
+                const photoData = await photoRes.json();
+                return { ...dog, photo: photoData.message };
+              } catch {
+                return { ...dog, photo: null };
+              }
+            }));
+            this.dogs = dogsWithPhotos;
+          } catch (e) {
+            this.dogs = [];
+          }
+        }
       },
     }).mount('#app');
   </script>
