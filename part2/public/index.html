@@ -30,6 +30,34 @@
       <div class="alert alert-success">Login successful! Redirecting...</div>
     </div>
 
+    <div v-if="dogs.length" class="mt-5">
+      <h2 class="mb-3">All Dogs</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered align-middle bg-white">
+          <thead class="table-light">
+            <tr>
+              <th>Dog ID</th>
+              <th>Name</th>
+              <th>Size</th>
+              <th>Owner ID</th>
+              <th>Photo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="dog in dogs" :key="dog.dog_id">
+              <td>{{ dog.dog_id }}</td>
+              <td>{{ dog.name }}</td>
+              <td>{{ dog.size }}</td>
+              <td>{{ dog.owner_id }}</td>
+              <td>
+                <img v-if="dog.photo" :src="dog.photo" alt="Dog photo" style="max-width:100px;max-height:100px;">
+                <span v-else>Loading...</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     
   </div>
 
@@ -45,6 +73,9 @@
           loggedIn: false,
           dogs: []
         };
+      },
+      mounted() {
+        this.fetchDogs();
       },
       methods: {
         async login() {
@@ -73,6 +104,25 @@
             }, 1000);
           } catch (e) {
             this.error = 'Network error';
+          }
+        },
+        async fetchDogs() {
+          try {
+            const res = await fetch('/api/dogs');
+            const dogs = await res.json();
+            // For each dog, fetch a random photo
+            await Promise.all(dogs.map(async (dog) => {
+              try {
+                const imgRes = await fetch('https://dog.ceo/api/breeds/image/random');
+                const imgData = await imgRes.json();
+                dog.photo = imgData.message;
+              } catch {
+                dog.photo = '';
+              }
+            }));
+            this.dogs = dogs;
+          } catch (e) {
+            // Optionally handle error
           }
         },
       },
