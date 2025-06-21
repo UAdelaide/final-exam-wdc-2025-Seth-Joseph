@@ -96,29 +96,7 @@
             this.error = 'Network error';
           }
         },
-        async loadDogs() {
-          try {
-            const res = await fetch('/api/dogs');
-            const dogs = await res.json();
-            if (!Array.isArray(dogs)) {
-              this.dogs = [];
-              return;
-            }
-            // Fetch a random photo for each dog
-            const dogsWithPhotos = await Promise.all(dogs.map(async dog => {
-              try {
-                const photoRes = await fetch('https://dog.ceo/api/breeds/image/random');
-                const photoData = await photoRes.json();
-                return { ...dog, photo: photoData.message };
-              } catch {
-                return { ...dog, photo: '' };
-              }
-            }));
-            this.dogs = dogsWithPhotos;
-          } catch (e) {
-            this.dogs = [];
-          }
-        }
+        
       },
       mounted() {
         this.loadDogs();
