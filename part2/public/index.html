@@ -30,7 +30,7 @@
       <div class="alert alert-success">Login successful! Redirecting...</div>
     </div>
 
-    <div v-if="dogs.length" class="mt-5">
+    <div class="mt-5">
       <h2 class="mb-3">All Dogs</h2>
       <div class="table-responsive">
         <table class="table table-bordered align-middle bg-white">
@@ -44,6 +44,9 @@
             </tr>
           </thead>
           <tbody>
+            <tr v-if="dogs.length === 0">
+              <td colspan="5" class="text-center">No dogs found.</td>
+            </tr>
             <tr v-for="dog in dogs" :key="dog.dog_id">
               <td>{{ dog.dog_id }}</td>
               <td>{{ dog.name }}</td>
@@ -56,6 +59,7 @@
             </tr>
           </tbody>
         </table>
+        <div v-if="dogsError" class="alert alert-danger mt-2">{{ dogsError }}</div>
       </div>
     </div>
     
@@ -71,7 +75,8 @@
           password: '',
           error: '',
           loggedIn: false,
-          dogs: []
+          dogs: [],
+          dogsError: ''
         };
       },
       mounted() {
@@ -109,8 +114,8 @@
         async fetchDogs() {
           try {
             const res = await fetch('/api/dogs');
+            if (!res.ok) throw new Error('Failed to fetch dogs');
             const dogs = await res.json();
-            // For each dog, fetch a random photo
             await Promise.all(dogs.map(async (dog) => {
               try {
                 const imgRes = await fetch('https://dog.ceo/api/breeds/image/random');
@@ -121,8 +126,10 @@
               }
             }));
             this.dogs = dogs;
+            this.dogsError = '';
           } catch (e) {
-            // Optionally handle error
+            this.dogs = [];
+            this.dogsError = 'Could not load dogs.';
           }
         },
       },
