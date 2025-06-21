@@ -36,20 +36,22 @@
         <table class="table table-bordered align-middle bg-white">
           <thead class="table-light">
             <tr>
+              <th>Dog ID</th>
               <th>Name</th>
               <th>Size</th>
-              <th>Owner Username</th>
+              <th>Owner ID</th>
               <th>Photo</th>
             </tr>
           </thead>
           <tbody>
             <tr v-if="dogs.length === 0">
-              <td colspan="4" class="text-center">No dogs found.</td>
+              <td colspan="5" class="text-center">No dogs found.</td>
             </tr>
-            <tr v-for="dog in dogs" :key="dog.dog_name + dog.owner_username">
-              <td>{{ dog.dog_name }}</td>
+            <tr v-for="dog in dogs" :key="dog.dog_id">
+              <td>{{ dog.dog_id }}</td>
+              <td>{{ dog.name }}</td>
               <td>{{ dog.size }}</td>
-              <td>{{ dog.owner_username }}</td>
+              <td>{{ dog.owner_id }}</td>
               <td>
                 <img v-if="dog.photo" :src="dog.photo" alt="Dog photo" style="max-width:100px;max-height:100px;">
                 <span v-else>Loading...</span>
